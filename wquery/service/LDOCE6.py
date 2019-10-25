@@ -22,14 +22,14 @@ class Ldoce6(MdxService):
     def title(self):
         return self.__register_label__
 
-    @export(u'Phonetic Alphabet', 1)
+    @export(u'Phonetic', 1)
     def fld_phonetic(self):
         html = self.get_html()
         m = re.search(r'<span class="pron">(.*?)</span>', html)
         if m:
             return '/'+m.groups()[0]+'/'
 
-    @export(u'British Audio', 2)
+    @export(u'AudioUK', 2)
     def fld_voicebre(self):
         html = self.get_html()
         m = re.search(r'<span class="brevoice">(.*?)</span brevoice>', html)
@@ -37,7 +37,7 @@ class Ldoce6(MdxService):
             return m.groups()[0]
         return ''
 
-    @export(u'American Audio', 3)
+    @export(u'AudioUSA', 3)
     def fld_voiceame(self):
         html = self.get_html()
         m = re.search(r'<span class="amevoice">(.*?)</span amevoice>', html)
@@ -52,15 +52,23 @@ class Ldoce6(MdxService):
         if m:
             return m.groups()[0]
 
-    @export(u'Definition', 5)
-    def fld_definate(self):
+    @export(u'DefinitionEN', 5)
+    def fld_definition(self):
         html = self.get_html()
         m = re.search(r'<span class="def">(.*?)</span def>', html)
         if m:
             return m.groups()[0]
         return ''
+        
+    @export(u'DefinitionCN', 6)
+    def fld_definitionCN(self):
+        html = self.get_html()
+        m = re.search(r'<span class="def_c">(.*?)</span def_c>', html)
+        if m:
+            return m.groups()[0]
+        return ''
 
-    @export(u'First sentence', 6)
+    @export(u'1 sentence', 7)
     def fld_sentence(self):
         html = self.get_html()
         m = re.search(r'<span class="example">(.*?)</span example>', html)
@@ -68,19 +76,7 @@ class Ldoce6(MdxService):
             return re.sub('<img.*?png">', '', m.groups()[0])
         return ''
 
-    @export(u'First 2 sentence audio', 7)
-    def fld_first2sentence_audio(self):
-        html = self.get_html()
-        m = re.findall(
-            r'(<span class="example">.+?</span example>)', html)
-        if m:
-            if len(m) == 1:
-               return re.sub('<img.*?example>','', m[0])
-            else:
-               return re.sub('<img.*?example>','', m[0]) + '<br>' + re.sub('<img.*?example>','', m[1])
-        return ''
-
-    @export(u'First 2 sentence', 8)
+    @export(u'2 sentence', 8)
     def fld_first2sentence(self):
         html = self.get_html()
         m = re.findall(
@@ -91,6 +87,19 @@ class Ldoce6(MdxService):
             else:
 			   return re.sub('\[.*?png">','1.', m[0])+ '<br>' + re.sub('\[.*?png">','2.', m[1])
         return ''
+ 
+    @export(u'2 sentence audio', 9)
+    def fld_first2sentence_audio(self):
+        html = self.get_html()
+        m = re.findall(
+            r'(<span class="example">.+?</span example>)', html)
+        if m:
+            if len(m) == 1:
+               return re.sub('<img.*?example>','', m[0])
+            else:
+               return re.sub('<img.*?example>','', m[0]) + '<br>' + re.sub('<img.*?example>','', m[1])
+        return ''        
+
 
 
 
